@@ -23,7 +23,7 @@ public class SimularPlazoFijo extends AppCompatActivity {
                 Intent intent = new Intent(view.getContext(), ConstituirPlazoFijo.class);
                 view.getContext().startActivity(intent);}
         });
-//test commit
+/
     }
 
 
