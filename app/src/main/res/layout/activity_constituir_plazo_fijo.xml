@@ -26,7 +26,7 @@
             android:layout_height="60dp"
             android:layout_weight="3"
             android:gravity="center"
-            android:text="Banco UTN Santa Fe"
+            android:text="@string/TituloBanco"
             android:textAlignment="center"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -37,7 +37,7 @@
         android:id="@+id/textView5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Para construir un plazo fijo, necesitamos algunos datos"
+        android:text="@string/DescripcionPlazoFijo"
         android:textAlignment="center"
         android:textSize="20sp" />
 
@@ -51,7 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Nombre: "
+            android:text="@string/TituloNombre"
             android:textAlignment="center"
             android:textSize="16sp" />
 
@@ -75,7 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Apellido: "
+            android:text="@string/TituloApellido"
             android:textAlignment="center"
             android:textSize="16sp" />
 
@@ -100,7 +100,7 @@
             android:layout_width="95dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Moneda: "
+            android:text="@string/TituloMoneda"
             android:textAlignment="center"
             android:textSize="16sp"
             android:translationY="5dp" />

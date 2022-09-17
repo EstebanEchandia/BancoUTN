@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">BancoUTN</string>
+    <string name="TituloBanco">Banco UTN SantaFe</string>
+    <string name="TituloNombre">Nombre</string>
+    <string name="TituloApellido">Apellido</string>
+    <string name="DescripcionPlazoFijo">Para construir un plazo fijo, necesitamos algunos datos</string>
+    <string name="TituloMoneda">Moneda</string>
     <string name="TituloTNA">Tasa Nominal Anual</string>
     <string name="TituloTEA">Tasa Efectiva Anual</string>
     <string name="TituloCapital">Capital a Invertir ($)</string>
