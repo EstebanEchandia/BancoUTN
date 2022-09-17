@@ -27,16 +27,18 @@ public class SimularPlazoFijo extends AppCompatActivity {
         EditText montoCapital = binding.montoCapital;
 
         plazo.setText("Plazo: " + barraDias.getProgress() + " días");
-        if(!montoCapital.getText().toString().equals("")) capital.setText("Capital: " + montoCapital.getText().toString());
-        if(!montoCapital.getText().toString().equals("")) interesesGanados.setText("Intereses ganados:"+ montoCapital.getText().toString());
-        if(!montoCapital.getText().toString().equals("")) montoTotal.setText("Monto total: $ idem anterior" + montoCapital.getText().toString());
-        if(!montoCapital.getText().toString().equals("")) montoTotalAnual.setText("Monto total Anual: $ idem anterior" + montoCapital.getText().toString());
+        if(!montoCapital.getText().toString().equals(""))
+            capital.setText("Capital: " + montoCapital.getText().toString());
+        if(!montoCapital.getText().toString().equals(""))
+            interesesGanados.setText("Intereses ganados:"+ montoCapital.getText().toString());
+        if(!montoCapital.getText().toString().equals(""))
+            montoTotal.setText("Monto total: $ idem anterior" + montoCapital.getText().toString());
+        if(!montoCapital.getText().toString().equals(""))
+            montoTotalAnual.setText("Monto total Anual: $ idem anterior" + montoCapital.getText().toString());
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
 
         super.onCreate(savedInstanceState);
         binding = ActivitySimularPlazoFijoBinding.inflate(getLayoutInflater());
