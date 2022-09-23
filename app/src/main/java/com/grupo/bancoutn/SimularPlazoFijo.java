@@ -2,6 +2,7 @@ package com.grupo.bancoutn;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -17,7 +18,14 @@ public class SimularPlazoFijo extends AppCompatActivity {
 
     private ActivitySimularPlazoFijoBinding binding;
 
-    private void acutalizarCampos (){
+    private float TNA;
+    private float TEA;
+    private float diasPlazo;
+    private float capitalFinalSinRenovacion;
+    private float capitalFinalConRenovacion;
+    private float capitalInicial;
+
+    private void actualizarCampos (){
         SeekBar barraDias = binding.seekBar;
         TextView plazo = binding.plazo;
         TextView capital = binding.capital;
@@ -25,6 +33,8 @@ public class SimularPlazoFijo extends AppCompatActivity {
         TextView montoTotal = binding.montoTotal;
         TextView montoTotalAnual = binding.montoTotalAnual;
         EditText montoCapital = binding.montoCapital;
+
+
 
         plazo.setText("Plazo: " + barraDias.getProgress() + " días");
         if(!montoCapital.getText().toString().equals(""))
@@ -37,6 +47,18 @@ public class SimularPlazoFijo extends AppCompatActivity {
             montoTotalAnual.setText("Monto total Anual: $ idem anterior" + montoCapital.getText().toString());
     }
 
+   public void calcularSimulacion(){
+        TNA = Float.parseFloat(binding.montoTNA.getText().toString());
+        TEA = Float.parseFloat(binding.montoTEA.getText().toString());
+        capitalInicial = Float.parseFloat(binding.montoCapital.getText().toString());
+        if (binding.checkBox.isChecked()){
+
+        }
+        else {
+            capitalFinalSinRenovacion = capitalInicial * (TNA * diasPlazo / 365);
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -47,33 +69,39 @@ public class SimularPlazoFijo extends AppCompatActivity {
 
         TextView textoDias = binding.textoDias;
         SeekBar barraDias = binding.seekBar;
+        barraDias.setMax(365);
         barraDias.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 textoDias.setText("Días: " + i);
+                diasPlazo = i;
             }
-
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
             }
-
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                acutalizarCampos();
+                actualizarCampos();
             }
         });
-        Button calcular = binding.calcular;
 
+        Button botonCalcular = binding.calcular;
 
-        calcular.setOnClickListener(new View.OnClickListener() {
+        botonCalcular.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                acutalizarCampos();
+                actualizarCampos();
+
+                //funcion de calcular plazo fijo
+                Intent intent = getIntent();
+                intent.putExtra("CapitalInicial", binding.montoCapital.getText().toString());
+                intent.putExtra("Plazo Dias", String.valueOf(diasPlazo));
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
-
 
 
     }
+
 }

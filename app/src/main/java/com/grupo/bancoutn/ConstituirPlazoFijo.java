@@ -14,6 +14,8 @@ import com.grupo.bancoutn.databinding.ActivityConstituirPlazoFijoBinding;
 
 public class ConstituirPlazoFijo extends AppCompatActivity {
 
+    public static final int REQUEST_CODE = 1;
+
     private ActivityConstituirPlazoFijoBinding binding;
 
     @Override
@@ -30,14 +32,36 @@ public class ConstituirPlazoFijo extends AppCompatActivity {
         moneda.setAdapter(adapter);
         //Button botonSimular = (Button)findViewById(R.id.botonSimular);
 
+
+
         botonSimular.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), SimularPlazoFijo.class);
-                view.getContext().startActivity(intent);}
+                startActivityForResult(intent, REQUEST_CODE);
+            }
+
+
         });
+
+
+
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        try {
+            super.onActivityResult(requestCode, resultCode, data);
 
+            if (requestCode == REQUEST_CODE  && resultCode  == RESULT_OK) {
+
+                String requiredValue = data.getStringExtra("key");
+            }
+        } catch (Exception ex) {
+            //Toast.makeText(Activity.this, ex.toString(),
+            //        Toast.LENGTH_SHORT).show();
+        }
+
+    }
 
 }
