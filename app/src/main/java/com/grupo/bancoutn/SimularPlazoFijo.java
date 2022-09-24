@@ -94,8 +94,8 @@ public class SimularPlazoFijo extends AppCompatActivity {
 
                 //funcion de calcular plazo fijo
                 Intent intent = getIntent();
-                intent.putExtra("CapitalInicial", binding.montoCapital.getText().toString());
-                intent.putExtra("Plazo Dias", String.valueOf(diasPlazo));
+                intent.putExtra("CapitalInicial" , binding.montoCapital.getText().toString());
+                intent.putExtra("PlazoDias", String.valueOf(diasPlazo));
                 setResult(RESULT_OK, intent);
                 finish();
             }

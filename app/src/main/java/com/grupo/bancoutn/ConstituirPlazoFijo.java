@@ -2,7 +2,10 @@ package com.grupo.bancoutn;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.os.Bundle;
@@ -32,20 +35,13 @@ public class ConstituirPlazoFijo extends AppCompatActivity {
         moneda.setAdapter(adapter);
         //Button botonSimular = (Button)findViewById(R.id.botonSimular);
 
-
-
         botonSimular.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), SimularPlazoFijo.class);
                 startActivityForResult(intent, REQUEST_CODE);
             }
-
-
         });
-
-
-
     }
 
     @Override
@@ -54,8 +50,11 @@ public class ConstituirPlazoFijo extends AppCompatActivity {
             super.onActivityResult(requestCode, resultCode, data);
 
             if (requestCode == REQUEST_CODE  && resultCode  == RESULT_OK) {
+                String capitalInicial = data.getStringExtra("CapitalInicial");
+                String plazoDias = data.getStringExtra("PlazoDias");
+                Log.e("capital", capitalInicial);
+                Log.e("plazo", plazoDias);
 
-                String requiredValue = data.getStringExtra("key");
             }
         } catch (Exception ex) {
             //Toast.makeText(Activity.this, ex.toString(),
