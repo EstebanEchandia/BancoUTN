@@ -24,38 +24,43 @@ public class SimularPlazoFijo extends AppCompatActivity {
     private float capitalFinalSinRenovacion;
     private float capitalFinalConRenovacion;
     private float capitalInicial;
+    private float interesesGanados;
+            
 
     private void actualizarCampos (){
         SeekBar barraDias = binding.seekBar;
-        TextView plazo = binding.plazo;
-        TextView capital = binding.capital;
-        TextView interesesGanados = binding.interesesGanados;
-        TextView montoTotal = binding.montoTotal;
-        TextView montoTotalAnual = binding.montoTotalAnual;
-        EditText montoCapital = binding.montoCapital;
+        TextView textViewPlazo = binding.plazo;
+        TextView textViewCapital = binding.capital;
+        TextView textViewInteresesGanados = binding.interesesGanados;
+        TextView textViewMontoTotal = binding.montoTotal;
+        TextView textViewMontoTotalAnual = binding.montoTotalAnual;
+        EditText editTextMontoCapital = binding.montoCapital;
 
 
 
-        plazo.setText("Plazo: " + barraDias.getProgress() + " días");
-        if(!montoCapital.getText().toString().equals(""))
-            capital.setText("Capital: " + montoCapital.getText().toString());
-        if(!montoCapital.getText().toString().equals(""))
-            interesesGanados.setText("Intereses ganados:"+ montoCapital.getText().toString());
-        if(!montoCapital.getText().toString().equals(""))
-            montoTotal.setText("Monto total: $ idem anterior" + montoCapital.getText().toString());
-        if(!montoCapital.getText().toString().equals(""))
-            montoTotalAnual.setText("Monto total Anual: $ idem anterior" + montoCapital.getText().toString());
+        textViewPlazo.setText("Plazo: " + barraDias.getProgress() + " días");
+        if(!editTextMontoCapital.getText().toString().equals(""))
+            textViewCapital.setText("Capital: " + capitalInicial);
+        if(!editTextMontoCapital.getText().toString().equals(""))
+            textViewInteresesGanados.setText("Intereses ganados: "+ String.valueOf(interesesGanados));
+        if(!editTextMontoCapital.getText().toString().equals(""))
+            textViewMontoTotal.setText("Monto total: " + String.valueOf(capitalFinalSinRenovacion));
+        if(!editTextMontoCapital.getText().toString().equals(""))
+            textViewMontoTotalAnual.setText("Monto total Anual: " + editTextMontoCapital.getText().toString());
     }
 
    public void calcularSimulacion(){
         TNA = Float.parseFloat(binding.montoTNA.getText().toString());
         TEA = Float.parseFloat(binding.montoTEA.getText().toString());
         capitalInicial = Float.parseFloat(binding.montoCapital.getText().toString());
+       
         if (binding.checkBox.isChecked()){
 
         }
         else {
-            capitalFinalSinRenovacion = capitalInicial * (TNA * diasPlazo / 365);
+            // https://www.elmejortrato.com.ar/inversiones/como-calcular-la-ganancia-por-plazo-fijo
+            capitalFinalSinRenovacion = capitalInicial * (TNA * (diasPlazo / 365));
+            interesesGanados = capitalFinalSinRenovacion - capitalInicial;
         }
     };
 
@@ -71,10 +76,13 @@ public class SimularPlazoFijo extends AppCompatActivity {
         SeekBar barraDias = binding.seekBar;
         barraDias.setMax(365);
         barraDias.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            //seteo de la cantidad de dias del seekbar, se actualizan los datos cada vez que se cambia el valor
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 textoDias.setText("Días: " + i);
                 diasPlazo = i;
+                calcularSimulacion();
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
