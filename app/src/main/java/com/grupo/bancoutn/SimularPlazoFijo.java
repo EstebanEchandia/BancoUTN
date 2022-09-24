@@ -25,44 +25,7 @@ public class SimularPlazoFijo extends AppCompatActivity {
     private float capitalFinalConRenovacion;
     private float capitalInicial;
     private float interesesGanados;
-            
 
-    private void actualizarCampos (){
-        SeekBar barraDias = binding.seekBar;
-        TextView textViewPlazo = binding.plazo;
-        TextView textViewCapital = binding.capital;
-        TextView textViewInteresesGanados = binding.interesesGanados;
-        TextView textViewMontoTotal = binding.montoTotal;
-        TextView textViewMontoTotalAnual = binding.montoTotalAnual;
-        EditText editTextMontoCapital = binding.montoCapital;
-
-
-
-        textViewPlazo.setText("Plazo: " + barraDias.getProgress() + " días");
-        if(!editTextMontoCapital.getText().toString().equals(""))
-            textViewCapital.setText("Capital: " + capitalInicial);
-        if(!editTextMontoCapital.getText().toString().equals(""))
-            textViewInteresesGanados.setText("Intereses ganados: "+ String.valueOf(interesesGanados));
-        if(!editTextMontoCapital.getText().toString().equals(""))
-            textViewMontoTotal.setText("Monto total: " + String.valueOf(capitalFinalSinRenovacion));
-        if(!editTextMontoCapital.getText().toString().equals(""))
-            textViewMontoTotalAnual.setText("Monto total Anual: " + editTextMontoCapital.getText().toString());
-    }
-
-   public void calcularSimulacion(){
-        TNA = Float.parseFloat(binding.montoTNA.getText().toString());
-        TEA = Float.parseFloat(binding.montoTEA.getText().toString());
-        capitalInicial = Float.parseFloat(binding.montoCapital.getText().toString());
-       
-        if (binding.checkBox.isChecked()){
-
-        }
-        else {
-            // https://www.elmejortrato.com.ar/inversiones/como-calcular-la-ganancia-por-plazo-fijo
-            capitalFinalSinRenovacion = capitalInicial * (TNA * (diasPlazo / 365));
-            interesesGanados = capitalFinalSinRenovacion - capitalInicial;
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,8 +71,41 @@ public class SimularPlazoFijo extends AppCompatActivity {
                 finish();
             }
         });
-
-
     }
+
+    private void actualizarCampos (){
+        SeekBar barraDias = binding.seekBar;
+        TextView textViewPlazo = binding.plazo;
+        TextView textViewCapital = binding.capital;
+        TextView textViewInteresesGanados = binding.interesesGanados;
+        TextView textViewMontoTotal = binding.montoTotal;
+        TextView textViewMontoTotalAnual = binding.montoTotalAnual;
+        EditText editTextMontoCapital = binding.montoCapital;
+
+        textViewPlazo.setText("Plazo: " + barraDias.getProgress() + " días");
+        if(!editTextMontoCapital.getText().toString().equals(""))
+            textViewCapital.setText("Capital: " + capitalInicial);
+        if(!editTextMontoCapital.getText().toString().equals(""))
+            textViewInteresesGanados.setText("Intereses ganados: "+ String.valueOf(interesesGanados));
+        if(!editTextMontoCapital.getText().toString().equals(""))
+            textViewMontoTotal.setText("Monto total: " + String.valueOf(capitalFinalSinRenovacion));
+        if(!editTextMontoCapital.getText().toString().equals(""))
+            textViewMontoTotalAnual.setText("Monto total Anual: " + editTextMontoCapital.getText().toString());
+    }
+
+    public void calcularSimulacion(){
+        TNA = Float.parseFloat(binding.montoTNA.getText().toString());
+        TEA = Float.parseFloat(binding.montoTEA.getText().toString());
+        capitalInicial = Float.parseFloat(binding.montoCapital.getText().toString());
+
+        if (binding.checkBox.isChecked()){
+
+        }
+        else {
+            // https://www.elmejortrato.com.ar/inversiones/como-calcular-la-ganancia-por-plazo-fijo
+            capitalFinalSinRenovacion = capitalInicial * (TNA * (diasPlazo / 365));
+            interesesGanados = capitalFinalSinRenovacion - capitalInicial;
+        }
+    };
 
 }
