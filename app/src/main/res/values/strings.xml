@@ -16,4 +16,5 @@
     <string name="InteresesGanados">Intereses ganados:</string>
     <string name="MontoTotal">Monto Total:</string>
     <string name="MontoTotalAnual">Monto total anual:</string>
+    <string name="Confirmar">Confirmar</string>
 </resources>
