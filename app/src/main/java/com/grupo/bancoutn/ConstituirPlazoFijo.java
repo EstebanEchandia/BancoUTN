@@ -42,9 +42,7 @@ public class ConstituirPlazoFijo extends AppCompatActivity {
         Spinner spinnerMoneda = binding.spinner;
         EditText editTextNombre = binding.textoNombre;
         EditText editTextApellido = binding.textoApellido;
-
         botonConstituir.setEnabled(false);
-
 
         //Opciones del spinner
         final String[] opciones = {"PESOS","DOLARES","EUROS"};
@@ -85,7 +83,6 @@ public class ConstituirPlazoFijo extends AppCompatActivity {
                         .show();
             }
         });
-
     }
 
     //Este es el codigo que se ejecuta cuando vuelve de la actividad de SimularPlazoFijo

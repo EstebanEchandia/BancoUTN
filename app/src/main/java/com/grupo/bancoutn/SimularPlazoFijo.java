@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -21,11 +23,12 @@ public class SimularPlazoFijo extends AppCompatActivity {
 
     private float TNA;
     private float TEA;
-    private float diasPlazo;
     private float capitalFinalSinRenovacion;
     private float capitalFinalConRenovacion;
     private float capitalInicial;
     private float interesesGanados;
+    private int cantDiasMes = 30;
+    private int diasPlazo;
 
 
     @Override
@@ -38,15 +41,13 @@ public class SimularPlazoFijo extends AppCompatActivity {
         EditText TNA = binding.montoTNA;
         TextView textoDias = binding.textoDias;
         SeekBar barraDias = binding.seekBar;
-        barraDias.setMax(365);
+        barraDias.setMax(12);
         barraDias.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
             //seteo de la cantidad de dias del seekbar, se actualizan los datos cada vez que se cambia el valor
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                textoDias.setText("Días: " + i);
-                diasPlazo = i;
-                //calcularSimulacion();
+                textoDias.setText("Días: " + i*cantDiasMes);
+                diasPlazo = i*cantDiasMes;
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -54,12 +55,41 @@ public class SimularPlazoFijo extends AppCompatActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 actualizarCampos();
+                calcularSimulacion();
             }
         });
 
-        TNA.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        //Actualizar campos cuando se cambia el texto
+        binding.montoTNA.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onFocusChange(View view, boolean b) {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {};
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {};
+            @Override
+            public void afterTextChanged(Editable s) {
+                calcularSimulacion();
+                actualizarCampos();
+            }
+        });
+        binding.montoTEA.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {};
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {};
+            @Override
+            public void afterTextChanged(Editable s) {
+                calcularSimulacion();
+                actualizarCampos();
+            }
+        });
+        binding.montoCapital.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {};
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {};
+            @Override
+            public void afterTextChanged(Editable s) {
+                calcularSimulacion();
                 actualizarCampos();
             }
         });
@@ -72,6 +102,7 @@ public class SimularPlazoFijo extends AppCompatActivity {
 
                     if(!binding.montoTNA.getText().toString().equals("") && !binding.montoTEA.getText().toString().equals("") && !binding.montoCapital.getText().toString().equals("")){
                     actualizarCampos();
+
                     Intent intent = getIntent();
                     intent.putExtra("CapitalInicial" , binding.montoCapital.getText().toString());
                     intent.putExtra("PlazoDias", String.valueOf(diasPlazo));
@@ -95,12 +126,9 @@ public class SimularPlazoFijo extends AppCompatActivity {
                 finish();*/
             }
         });
-
-
     }
 
     private void actualizarCampos (){
-        SeekBar barraDias = binding.seekBar;
         TextView textViewPlazo = binding.plazo;
         TextView textViewCapital = binding.capital;
         TextView textViewInteresesGanados = binding.interesesGanados;
@@ -109,7 +137,7 @@ public class SimularPlazoFijo extends AppCompatActivity {
         EditText editTextMontoCapital = binding.montoCapital;
 
         Log.d("A ver que tiene",binding.montoTNA.getText().toString());
-        textViewPlazo.setText("Plazo: " + barraDias.getProgress() + " días");
+        textViewPlazo.setText("Plazo: " + diasPlazo + " días");
         if(!editTextMontoCapital.getText().toString().equals(""))
             textViewCapital.setText("Capital: " + capitalInicial);
         if(!editTextMontoCapital.getText().toString().equals(""))
@@ -118,26 +146,25 @@ public class SimularPlazoFijo extends AppCompatActivity {
             textViewMontoTotal.setText("Monto total: " + String.valueOf(capitalFinalSinRenovacion));
         if(!editTextMontoCapital.getText().toString().equals(""))
             textViewMontoTotalAnual.setText("Monto total Anual: " + editTextMontoCapital.getText().toString());
-
-
-
-
-
     }
 
     public void calcularSimulacion(){
-        TNA = Float.parseFloat(binding.montoTNA.getText().toString());
-        TEA = Float.parseFloat(binding.montoTEA.getText().toString());
-        capitalInicial = Float.parseFloat(binding.montoCapital.getText().toString());
+        if(!binding.montoTNA.getText().toString().equals("") && !binding.montoTEA.getText().toString().equals("") && !binding.montoCapital.getText().toString().equals("")){
+            TNA = Float.parseFloat(binding.montoTNA.getText().toString());
+            TEA = Float.parseFloat(binding.montoTEA.getText().toString());
+            capitalInicial = Float.parseFloat(binding.montoCapital.getText().toString());
 
-        if (binding.checkBox.isChecked()){
+            if (binding.checkBox.isChecked()){
 
+            }
+            else {
+                // https://www.elmejortrato.com.ar/inversiones/como-calcular-la-ganancia-por-plazo-fijo
+                capitalFinalSinRenovacion = capitalInicial * (TNA * (diasPlazo / 365));
+                interesesGanados = capitalFinalSinRenovacion - capitalInicial;
+            }
         }
-        else {
-            // https://www.elmejortrato.com.ar/inversiones/como-calcular-la-ganancia-por-plazo-fijo
-            capitalFinalSinRenovacion = capitalInicial * (TNA * (diasPlazo / 365));
-            interesesGanados = capitalFinalSinRenovacion - capitalInicial;
-        }
+
     };
+
 
 }
