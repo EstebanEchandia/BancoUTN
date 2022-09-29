@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,7 +35,7 @@ public class SimularPlazoFijo extends AppCompatActivity {
         binding = ActivitySimularPlazoFijoBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-
+        EditText TNA = binding.montoTNA;
         TextView textoDias = binding.textoDias;
         SeekBar barraDias = binding.seekBar;
         barraDias.setMax(365);
@@ -45,7 +46,7 @@ public class SimularPlazoFijo extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 textoDias.setText("Días: " + i);
                 diasPlazo = i;
-                calcularSimulacion();
+                //calcularSimulacion();
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -56,21 +57,46 @@ public class SimularPlazoFijo extends AppCompatActivity {
             }
         });
 
-        Button botonCalcular = binding.calcular;
+        TNA.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                actualizarCampos();
+            }
+        });
 
-        botonCalcular.setOnClickListener(new View.OnClickListener() {
+        Button botonConfirmar = binding.confirmar;
+
+        botonConfirmar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                actualizarCampos();
+
+                    if(!binding.montoTNA.getText().toString().equals("") && !binding.montoTEA.getText().toString().equals("") && !binding.montoCapital.getText().toString().equals("")){
+                    actualizarCampos();
+                    Intent intent = getIntent();
+                    intent.putExtra("CapitalInicial" , binding.montoCapital.getText().toString());
+                    intent.putExtra("PlazoDias", String.valueOf(diasPlazo));
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
+                else{
+                    Toast t = new Toast(getApplicationContext());
+                    t.setText("Debe sumnistrar un valor valido para los campos");
+                    t.show();
+                }
+
+
 
                 //funcion de calcular plazo fijo
+                /*
                 Intent intent = getIntent();
                 intent.putExtra("CapitalInicial" , binding.montoCapital.getText().toString());
                 intent.putExtra("PlazoDias", String.valueOf(diasPlazo));
                 setResult(RESULT_OK, intent);
-                finish();
+                finish();*/
             }
         });
+
+
     }
 
     private void actualizarCampos (){
@@ -82,6 +108,7 @@ public class SimularPlazoFijo extends AppCompatActivity {
         TextView textViewMontoTotalAnual = binding.montoTotalAnual;
         EditText editTextMontoCapital = binding.montoCapital;
 
+        Log.d("A ver que tiene",binding.montoTNA.getText().toString());
         textViewPlazo.setText("Plazo: " + barraDias.getProgress() + " días");
         if(!editTextMontoCapital.getText().toString().equals(""))
             textViewCapital.setText("Capital: " + capitalInicial);
@@ -91,6 +118,11 @@ public class SimularPlazoFijo extends AppCompatActivity {
             textViewMontoTotal.setText("Monto total: " + String.valueOf(capitalFinalSinRenovacion));
         if(!editTextMontoCapital.getText().toString().equals(""))
             textViewMontoTotalAnual.setText("Monto total Anual: " + editTextMontoCapital.getText().toString());
+
+
+
+
+
     }
 
     public void calcularSimulacion(){

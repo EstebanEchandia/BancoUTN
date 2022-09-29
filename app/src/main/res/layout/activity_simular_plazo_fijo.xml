@@ -115,12 +115,6 @@
         android:layout_height="wrap_content"
         android:text="@string/TituloRenovacion" />
 
-    <Button
-        android:id="@+id/calcular"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="calcular" />
-
     <TextView
         android:id="@+id/textView2"
         android:layout_width="match_parent"
@@ -158,10 +152,17 @@
         android:layout_height="wrap_content"
         android:text="@string/MontoTotalAnual" />
 
-    <Button
-        android:id="@+id/confirmar"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/Confirmar" />
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/confirmar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/Confirmar" />
+    </LinearLayout>
 
 </LinearLayout>

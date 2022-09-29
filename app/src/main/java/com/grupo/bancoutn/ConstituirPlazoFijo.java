@@ -43,6 +43,9 @@ public class ConstituirPlazoFijo extends AppCompatActivity {
         EditText editTextNombre = binding.textoNombre;
         EditText editTextApellido = binding.textoApellido;
 
+        botonConstituir.setEnabled(false);
+
+
         //Opciones del spinner
         final String[] opciones = {"PESOS","DOLARES","EUROS"};
         ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item,opciones);
@@ -94,10 +97,9 @@ public class ConstituirPlazoFijo extends AppCompatActivity {
             if (requestCode == REQUEST_CODE  && resultCode  == RESULT_OK) {
                 capitalInicial = data.getStringExtra("CapitalInicial");
                 plazoDias = data.getStringExtra("PlazoDias");
-
                 //Debug
                 Log.e("capital y plazo", capitalInicial+' '+plazoDias);
-
+                binding.botonConstituir.setEnabled(true);
             }
         } catch (Exception ex) {
             //Toast.makeText(Activity.this, ex.toString(),
