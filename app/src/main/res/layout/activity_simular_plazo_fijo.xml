@@ -10,20 +10,21 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:weightSum="10">
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="99dp"
-            android:layout_height="60dp"
-            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
             app:srcCompat="@drawable/mainactivity" />
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
-            android:layout_weight="3"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="Banco UTN Santa Fe"
             android:textAlignment="center"
@@ -107,6 +108,7 @@
         android:id="@+id/textoDias"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:text="@string/TituloDias" />
 
     <CheckBox

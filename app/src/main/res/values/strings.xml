@@ -1,4 +1,9 @@
 <resources>
+    <string-array name="opciones">
+        <item>PESOS</item>
+        <item>EUROS</item>
+        <item>DOLARES</item>
+    </string-array>
     <string name="app_name">BancoUTN</string>
     <string name="TituloBanco">Banco UTN SantaFe</string>
     <string name="TituloNombre">Nombre</string>

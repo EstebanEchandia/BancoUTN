@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.grupo.bancoutn.databinding.ActivityConstituirPlazoFijoBinding;
 
@@ -44,9 +45,9 @@ public class ConstituirPlazoFijo extends AppCompatActivity {
         EditText editTextApellido = binding.textoApellido;
         botonConstituir.setEnabled(false);
 
-        //Opciones del spinner
-        final String[] opciones = {"PESOS","DOLARES","EUROS"};
-        ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item,opciones);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.opciones,
+                android.R.layout.simple_spinner_item);
         spinnerMoneda.setAdapter(adapter);
 
         botonSimular.setOnClickListener(new View.OnClickListener() {
@@ -72,15 +73,19 @@ public class ConstituirPlazoFijo extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //popUp de dialogo constituido
-                new AlertDialog.Builder(view.getContext())
-                        .setTitle("Felicitaciones "+nombre+" "+apellido+"!")
-                        .setMessage("Tu plazo fijo de "+capitalInicial+" "+moneda.toLowerCase()+" ha sido constituido!")
-                        .setPositiveButton("Joya!", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                //no hacemos nada
-                            }
-                        })
-                        .show();
+                if(binding.textoNombre.getText().toString().equals("") || binding.textoApellido.getText().toString().equals("")){
+                    Toast.makeText(getApplicationContext(),"Ingrese un nombre y apellido valido",Toast.LENGTH_LONG).show();
+                } else {
+                    new AlertDialog.Builder(view.getContext())
+                            .setTitle("Felicitaciones "+nombre+" "+apellido+"!")
+                            .setMessage("Tu plazo fijo de "+capitalInicial+" "+moneda.toLowerCase()+" ha sido constituido!")
+                            .setPositiveButton("Joya!", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //no hacemos nada
+                                }
+                            })
+                            .show();
+                }
             }
         });
     }
