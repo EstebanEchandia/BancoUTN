@@ -41,13 +41,21 @@ public class SimularPlazoFijo extends AppCompatActivity {
         EditText TNA = binding.montoTNA;
         TextView textoDias = binding.textoDias;
         SeekBar barraDias = binding.seekBar;
-        barraDias.setMax(12);
+        barraDias.setMax(5);
         barraDias.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             //seteo de la cantidad de dias del seekbar, se actualizan los datos cada vez que se cambia el valor
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                textoDias.setText("Días: " + i*cantDiasMes);
-                diasPlazo = i*cantDiasMes;
+                if(i<=3){
+                    diasPlazo = i*cantDiasMes;
+                }
+                else if(i==4){
+                    diasPlazo = 180;
+                }
+                else{
+                    diasPlazo = 360;
+                }
+                textoDias.setText("Días: " + diasPlazo);
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -145,11 +153,16 @@ public class SimularPlazoFijo extends AppCompatActivity {
         if(!editTextMontoCapital.getText().toString().equals(""))
             textViewMontoTotal.setText("Monto total: " + String.valueOf(capitalFinalSinRenovacion));
         if(!editTextMontoCapital.getText().toString().equals(""))
-            textViewMontoTotalAnual.setText("Monto total Anual: " + editTextMontoCapital.getText().toString());
+            textViewMontoTotalAnual.setText("Monto total Anual: " + String.valueOf(capitalFinalConRenovacion));
     }
 
     public void calcularSimulacion(){
         if(!binding.montoTNA.getText().toString().equals("") && !binding.montoTEA.getText().toString().equals("") && !binding.montoCapital.getText().toString().equals("")){
+            Integer progresoBarra, meses;
+            progresoBarra=(Integer) binding.seekBar.getProgress();
+            meses = Integer.parseInt(progresoBarra.toString());
+            if(meses==4) meses=6;
+            if(meses==5) meses=12;
             TNA = Float.parseFloat(binding.montoTNA.getText().toString());
             TEA = Float.parseFloat(binding.montoTEA.getText().toString());
             capitalInicial = Float.parseFloat(binding.montoCapital.getText().toString());
@@ -158,13 +171,39 @@ public class SimularPlazoFijo extends AppCompatActivity {
 
             }
             else {
-                // https://www.elmejortrato.com.ar/inversiones/como-calcular-la-ganancia-por-plazo-fijo
-                capitalFinalSinRenovacion = capitalInicial * (TNA * (diasPlazo / 365));
-                interesesGanados = capitalFinalSinRenovacion - capitalInicial;
+                interesesGanados = ((TNA/100)/12)*meses*capitalInicial;
+                capitalFinalSinRenovacion = interesesGanados + capitalInicial;
+                capitalFinalConRenovacion = capitalInicial * (TEA/100) + capitalInicial;
             }
         }
 
-    };
+    }
+
+    public float tasa_nominal_anual(double tasa_efectiva_anual, int meses){
+
+        double tasa_nominal_anual, factor;
+
+        tasa_efectiva_anual = tasa_efectiva_anual/100;
+
+        factor = 12/meses;
+
+        tasa_nominal_anual = Math.pow((tasa_efectiva_anual+1), (1/factor)) * factor - factor;
+
+        return (float) tasa_nominal_anual*100;
+    }
+
+    public float tasa_efectiva_anual(double tasa_nominal_anual, int meses){
+
+        double tasa_efectiva_anual, factor;
+
+        tasa_nominal_anual=tasa_nominal_anual/100;
+
+        factor = 12/meses;
+
+        tasa_efectiva_anual = Math.pow ((1 + (tasa_nominal_anual/factor)), factor) -1;
+
+        return (float) tasa_efectiva_anual*100;
+    }
 
 
 }

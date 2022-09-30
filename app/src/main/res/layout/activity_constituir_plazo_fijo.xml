@@ -15,7 +15,7 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="78"
+            android:layout_width="99dp"
             android:layout_height="60dp"
             app:srcCompat="@drawable/mainactivity" />
 
