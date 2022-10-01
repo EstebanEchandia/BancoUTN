@@ -62,10 +62,13 @@ public class ConstituirPlazoFijo extends AppCompatActivity {
                 //Debug
                 Log.e("nombre, apellido y moneda", nombre+' '+apellido+' '+moneda);
 
-
-                //Intent a actividad de simular plazo fijo, el startActivityForResult queda esperando una respuesta
-                Intent intent = new Intent(view.getContext(), SimularPlazoFijo.class);
-                startActivityForResult(intent, REQUEST_CODE);
+                if(binding.textoNombre.getText().toString().equals("") || binding.textoApellido.getText().toString().equals("")){
+                    Toast.makeText(getApplicationContext(),"Ingrese un nombre y apellido valido",Toast.LENGTH_LONG).show();
+                } else {
+                    //Intent a actividad de simular plazo fijo, el startActivityForResult queda esperando una respuesta
+                    Intent intent = new Intent(view.getContext(), SimularPlazoFijo.class);
+                    startActivityForResult(intent, REQUEST_CODE);
+                }
             }
         });
 
@@ -73,9 +76,6 @@ public class ConstituirPlazoFijo extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //popUp de dialogo constituido
-                if(binding.textoNombre.getText().toString().equals("") || binding.textoApellido.getText().toString().equals("")){
-                    Toast.makeText(getApplicationContext(),"Ingrese un nombre y apellido valido",Toast.LENGTH_LONG).show();
-                } else {
                     new AlertDialog.Builder(view.getContext())
                             .setTitle("Felicitaciones "+nombre+" "+apellido+"!")
                             .setMessage("Tu plazo fijo de "+capitalInicial+" "+moneda.toLowerCase()+" ha sido constituido!")
@@ -85,7 +85,7 @@ public class ConstituirPlazoFijo extends AppCompatActivity {
                                 }
                             })
                             .show();
-                }
+
             }
         });
     }
