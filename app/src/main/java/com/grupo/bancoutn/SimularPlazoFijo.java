@@ -8,13 +8,11 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.grupo.bancoutn.databinding.ActivityConstituirPlazoFijoBinding;
 import com.grupo.bancoutn.databinding.ActivitySimularPlazoFijoBinding;
 
 public class SimularPlazoFijo extends AppCompatActivity {
@@ -42,27 +40,24 @@ public class SimularPlazoFijo extends AppCompatActivity {
         TextView textoDias = binding.textoDias;
         SeekBar barraDias = binding.seekBar;
         barraDias.setMax(12);
-        binding.montoTNA.setText("0");
-        binding.montoTEA.setText("0");
+        binding.montoTNA.setText(Double.toString(TNA));
+        binding.montoTEA.setText(Double.toString(TEA));
         binding.montoCapital.setText("0");
 
+        //inicializar
         barraDias.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             //seteo de la cantidad de dias del seekbar, se actualizan los datos cada vez que se cambia el valor
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 meses = i;
-                //diasPlazo = i*cantDiasMes;
-                diasPlazo = i;
+                diasPlazo = i*30;
                 textoDias.setText("Días: " + diasPlazo);
-                Log.d("meses",Integer.toString(meses));
-                calcularSimulacion();
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
             }
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                actualizarCampos();
             }
         });
 
@@ -70,53 +65,24 @@ public class SimularPlazoFijo extends AppCompatActivity {
         binding.montoTNA.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                calcularSimulacion();
-                actualizarCampos();
             };
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             };
             @Override
             public void afterTextChanged(Editable s) {
-                    if (binding.montoTNA.getText().toString().equals("")) {
-                        TNA = 0;
-                        calcularSimulacion();
-                        actualizarCampos();
-                    } else {
-                        TNA = Float.parseFloat(binding.montoTNA.getText().toString());
-                        TEA = tasa_efectiva_anual(TNA, meses);
-                        binding.montoTEA.setText(Double.toString(TEA));
-                    }
-
             }
         });
 
         binding.montoTEA.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                calcularSimulacion();
-                actualizarCampos();
             };
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {};
             @Override
             public void afterTextChanged(Editable s) {
 
-                //TODO: No esta funcionando, revisar como poder modificarlo sin que entre en loop infinito, entiendo que con alguna flag podrimos controlarlo
-
-                /*
-                if (binding.montoTEA.getText().toString().equals("")){
-                    TEA = 0;
-                    calcularSimulacion();
-                    actualizarCampos();
-                }
-                else{
-                    TEA = Float.parseFloat(binding.montoTEA.getText().toString());
-                    TNA = tasa_nominal_anual(TEA, meses);
-                    binding.montoTNA.setText(Double.toString(TNA));
-                }
-
-                 */
             }
         });
         binding.montoCapital.addTextChangedListener(new TextWatcher() {
@@ -126,8 +92,6 @@ public class SimularPlazoFijo extends AppCompatActivity {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {};
             @Override
             public void afterTextChanged(Editable s) {
-                calcularSimulacion();
-                actualizarCampos();
             }
         });
 
@@ -194,30 +158,23 @@ public class SimularPlazoFijo extends AppCompatActivity {
             capitalFinalSinRenovacion = interesesGanados + capitalInicial;
             capitalFinalConRenovacion = capitalInicial * (TEA / 100) + capitalInicial;
         }
-
     }
 
-    public double tasa_nominal_anual(double tasa_efectiva_anual, int meses){
-
-        double tasa_nominal_anual, factor;
-        tasa_efectiva_anual = tasa_efectiva_anual/100;
+    public double tasaNominalAnual(double tasaEfectivaAnual, int meses){
+        double tasaNominalAnual, factor;
+        tasaEfectivaAnual = tasaEfectivaAnual/100;
         factor = 12/meses;
-        tasa_nominal_anual = Math.pow((tasa_efectiva_anual+1), (1/factor)) * factor - factor;
-
-        return tasa_nominal_anual*100;
+        tasaNominalAnual = Math.pow((tasaEfectivaAnual+1), (1/factor)) * factor - factor;
+        return tasaNominalAnual*100;
     }
 
-    public double tasa_efectiva_anual(double tasa_nominal_anual, int meses){
-
+    public double tasaEfectivaAnual(double tasaNominalAnual, int meses){
         if(meses==0) return 0;
-
-        double tasa_efectiva_anual, factor;
-        tasa_nominal_anual=tasa_nominal_anual/100;
+        double tasaEfectivaAnual, factor;
+        tasaNominalAnual=tasaNominalAnual/100;
         factor = 12/meses;
-        tasa_efectiva_anual = Math.pow ((1 + (tasa_nominal_anual/factor)), factor) -1;
-
-        return tasa_efectiva_anual*100;
+        tasaEfectivaAnual = Math.pow ((1 + (tasaNominalAnual/factor)), factor) -1;
+        return tasaEfectivaAnual*100;
     }
-
 
 }
