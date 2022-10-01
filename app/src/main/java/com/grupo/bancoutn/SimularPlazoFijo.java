@@ -55,6 +55,13 @@ public class SimularPlazoFijo extends AppCompatActivity {
                 diasPlazo = i*30;
                 textoDias.setText("Días: " + diasPlazo);
                 Log.d("meses",Integer.toString(meses));
+
+                //calcular TEA si cambio, al depender de los meses
+                if (!binding.montoTNA.getText().toString().equals("")){
+                    TNA = Float.parseFloat(binding.montoTNA.getText().toString());
+                    TEA = tasa_efectiva_anual(TNA, meses);
+                    binding.montoTEA.setText(Double.toString(TEA));
+                }
                 calcularSimulacion();
             }
             @Override
@@ -78,15 +85,19 @@ public class SimularPlazoFijo extends AppCompatActivity {
             };
             @Override
             public void afterTextChanged(Editable s) {
+
                     if (binding.montoTNA.getText().toString().equals("")) {
                         TNA = 0;
                         calcularSimulacion();
                         actualizarCampos();
-                    } else {
-                        TNA = Float.parseFloat(binding.montoTNA.getText().toString());
-                        TEA = tasa_efectiva_anual(TNA, meses);
-                        binding.montoTEA.setText(Double.toString(TEA));
                     }
+                    else {
+                        if (binding.montoTNA.hasFocus()) {
+                            TNA = Float.parseFloat(binding.montoTNA.getText().toString());
+                            TEA = tasa_efectiva_anual(TNA, meses);
+                            binding.montoTEA.setText(Double.toString(TEA));
+                        }
+                }
 
             }
         });
@@ -104,19 +115,21 @@ public class SimularPlazoFijo extends AppCompatActivity {
 
                 //TODO: No esta funcionando, revisar como poder modificarlo sin que entre en loop infinito, entiendo que con alguna flag podrimos controlarlo
 
-                /*
-                if (binding.montoTEA.getText().toString().equals("")){
-                    TEA = 0;
-                    calcularSimulacion();
-                    actualizarCampos();
-                }
-                else{
-                    TEA = Float.parseFloat(binding.montoTEA.getText().toString());
-                    TNA = tasa_nominal_anual(TEA, meses);
-                    binding.montoTNA.setText(Double.toString(TNA));
+                if(binding.montoTEA.hasFocus()) {
+                    if (binding.montoTEA.getText().toString().equals("")){
+                        TEA = 0;
+                        calcularSimulacion();
+                        actualizarCampos();
+                    }
+                    else{
+                        if (binding.montoTNA.hasFocus()) {
+                            TEA = Float.parseFloat(binding.montoTEA.getText().toString());
+                            TNA = tasa_nominal_anual(TEA, meses);
+                            binding.montoTNA.setText(Double.toString(TNA));
+                        }
+                    }
                 }
 
-                 */
             }
         });
         binding.montoCapital.addTextChangedListener(new TextWatcher() {
@@ -184,16 +197,11 @@ public class SimularPlazoFijo extends AppCompatActivity {
         else{
             capitalInicial = Float.parseFloat(binding.montoCapital.getText().toString());
         }
-        if (false){
-            interesesGanados = 0;
-            capitalFinalSinRenovacion = capitalInicial;
-            capitalFinalConRenovacion = capitalInicial;
-        }
-        else{
-            interesesGanados = ((TNA / 100) / 12) * meses * capitalInicial;
-            capitalFinalSinRenovacion = interesesGanados + capitalInicial;
-            capitalFinalConRenovacion = capitalInicial * (TEA / 100) + capitalInicial;
-        }
+
+        interesesGanados = ((TNA / 100) / 12) * meses * capitalInicial;
+        capitalFinalSinRenovacion = interesesGanados + capitalInicial;
+        capitalFinalConRenovacion = capitalInicial * (TEA / 100) + capitalInicial;
+
 
     }
 
