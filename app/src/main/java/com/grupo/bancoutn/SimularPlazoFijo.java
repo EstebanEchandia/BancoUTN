@@ -52,7 +52,7 @@ public class SimularPlazoFijo extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 meses = i;
                 //diasPlazo = i*cantDiasMes;
-                diasPlazo = i;
+                diasPlazo = i*30;
                 textoDias.setText("Días: " + diasPlazo);
                 Log.d("meses",Integer.toString(meses));
                 calcularSimulacion();
